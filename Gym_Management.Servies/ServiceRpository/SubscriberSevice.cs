@@ -32,13 +32,14 @@ namespace GYM_Management.Servies.ServiceRpository
             return _subscriberRepository.GetAllSubscribers().ToList()[index];
         }
 
-        public void PostSubscriber(Subscriber value)
+        public Subscriber PostSubscriber(Subscriber value)
         {
             _subscriberRepository.DataPostSubscriber(value);
             IdCount++;
+            return value;
         }
 
-        public void PutSubscriber(int id, Subscriber value)
+        public Subscriber PutSubscriber(int id, Subscriber value)
         {
             int index = _subscriberRepository.GetAllSubscribers().ToList().FindIndex((Subscriber s) => s.Subscription_Number == id);
             if (index != -1)
@@ -54,7 +55,9 @@ namespace GYM_Management.Servies.ServiceRpository
                 foundsub.End_Subscription_Date = value.End_Subscription_Date;
                 foundsub.Start_Subscription_Date = value.Start_Subscription_Date;
                 _subscriberRepository.DataPutSubscriber(index, value);
+                return foundsub;
             }
+            return null;
         }
     }
 }

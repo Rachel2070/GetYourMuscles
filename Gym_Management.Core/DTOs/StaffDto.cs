@@ -1,9 +1,14 @@
-﻿using GYM_Management.Core.Models;
+﻿using GYM_Managing.Classes;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GYM_Managing.Classes
+namespace Gym_Management.Core.TDOs
 {
-    public class Staff
+    public class StaffDto
     {
         [Key]
         public int Worker_Number { get; set; }
@@ -16,8 +21,6 @@ namespace GYM_Managing.Classes
         public string Address { get; set; }
         public string Position { get; set; }
         //public List<int> SubscriberId { get; set; }
-        public List<Subscriber> Subscribers { get; set; }
-        public List<Equipment> EquipmentInCategory { get; set; }  
 
     }
 }

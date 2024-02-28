@@ -1,5 +1,7 @@
 ﻿//using GYM_Managing.Classes;
 ///using GYM_Managing.Datas;
+using AutoMapper;
+using Gym_Management.Core.DTOs;
 using GYM_Management.Core.ServiceModels;
 using GYM_Managing.Classes;
 using Microsoft.AspNetCore.Mvc;
@@ -13,65 +15,52 @@ namespace GYM_Managing.Controllers
     public class EquipmentController : ControllerBase
     {
         private readonly IEquipmentService _equipmentService;
-        public EquipmentController(IEquipmentService context)
+
+        public readonly IMapper _mapper;
+        public EquipmentController(IEquipmentService context, IMapper mapper)
         {
             _equipmentService = context;
+            _mapper = mapper;   
         }
-        public static int IdCount = 4;
+        //public static int IdCount = 4;
         // GET: api/<EquipmentController>
         [HttpGet]
-        public IEnumerable<Equipment> Get()
+        public ActionResult<Equipment> Get()
         {
-            return _equipmentService.GetEquipment();
+            var list = _equipmentService.GetEquipment();
+            var newList = _mapper.Map<IEnumerable<EquipmentDto>>(list); 
+            return Ok(newList);
         }
 
         // GET api/<EquipmentController>/5
         [HttpGet("{id}")]
-        public Equipment Get(int id)
+        public ActionResult Get(int id)
         {
-            //Equipment foundsEq = _equipmentService.GetEquipment().Find(s => s.Id == id);
-            //if (foundsEq == null)
-            //    return null;
-            //return foundsEq;
-            return _equipmentService.GetByID(id);
+            var eq = _equipmentService.GetByID(id);
+            var newEq = _mapper.Map<EquipmentDto>(eq);
+            return Ok(newEq);
         }
 
         // POST api/<EquipmentController>
         [HttpPost]
-        public void Post([FromBody] Equipment value)
+        public ActionResult Post([FromBody] Equipment value)
         {
-            //Equipment e = new() { Id = IdCount, Name = value.Name, Category = value.Category, Last_Check = value.Last_Check, Test_Frequencies = value.Test_Frequencies, Expiry_Date = value.Expiry_Date };
-            //_equipmentService.GetEquipment().Add(e);
-            //    IdCount++;
-            //    return e;
-            _equipmentService.PostEquipment(value);  
+            var newEq = _equipmentService.PostEquipment(value);
+            return Ok(newEq);
         }
 
         // PUT api/<EquipmentController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Equipment value)
+        public ActionResult Put(int id, [FromBody] Equipment value)
         {
-            //Equipment foundEq = _equipmentService.GetEquipment().Find(e => e.Id == id);
-            //if (foundEq != null)
-            //{
-            //    foundEq.Id = foundEq.Id;
-            //    foundEq.Name = foundEq.Name;
-            //    foundEq.Category = value.Category;
-            //    foundEq.Last_Check = value.Last_Check;
-            //    foundEq.Test_Frequencies = value.Test_Frequencies;
-            //    foundEq.Expiry_Date = value.Expiry_Date;
-            //}
-            //return foundEq;
-            _equipmentService.PutEquipment(id, value);
+            var updated = _equipmentService.PutEquipment(id, value);
+            return Ok(updated);
         }
 
         // DELETE api/<EquipmentController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
-        {
-            //Equipment foundEq = _equipmentService.GetEquipment().Find(e => e.Id == id);
-            //if(foundEq != null)
-            //    _equipmentService.GetEquipment().Remove(foundEq);  
+        { 
             _equipmentService.DeleteEquipment(id);
         }
     }

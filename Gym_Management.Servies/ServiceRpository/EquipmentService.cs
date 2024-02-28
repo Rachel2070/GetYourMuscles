@@ -32,13 +32,14 @@ namespace GYM_Management.Servies.ServiceRpository
             return foundsEq;
         }
 
-        public void PostEquipment(Equipment value)
+        public Equipment PostEquipment(Equipment value)
         {
             _equipmentRepository.DataPostEquipment(value);
             IdCount++;
+            return value;
         }
 
-        public void PutEquipment(int id, Equipment value)
+        public Equipment PutEquipment(int id, Equipment value)
         {
             int index = _equipmentRepository.GetAllEquipment().ToList().FindIndex((Equipment e) => e.Id == id);
             if (index != -1) {
@@ -52,7 +53,9 @@ namespace GYM_Management.Servies.ServiceRpository
                 foundEq.Expiry_Date = value.Expiry_Date;
 
                 _equipmentRepository.DataPutEquipment(index, foundEq);
+                return foundEq;
             }
+            return null;
         }
 
         public void DeleteEquipment(int id)

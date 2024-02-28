@@ -12,7 +12,7 @@ namespace GYM_Management.Core.ServiceModels
         public IEnumerable<Staff> GetStaff();
         public Staff GetStaffByID(int id);
         public List<Staff> GetStaffByPosition(string position);
-        public void PostStaff(Staff value);
-        public void PutStaff(int id, Staff value);
+        public Staff PostStaff(Staff value);
+        public Staff PutStaff(int id, Staff value);
     }
 }

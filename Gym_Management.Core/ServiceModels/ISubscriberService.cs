@@ -11,7 +11,7 @@ namespace GYM_Management.Core.ServiceModels
     {
         public IEnumerable<Subscriber> GetSubscribers();
         public Subscriber GetSubscribers(int id);
-        public void PostSubscriber(Subscriber value);
-        public void PutSubscriber(int id, Subscriber value);
+        public Subscriber PostSubscriber(Subscriber value);
+        public Subscriber PutSubscriber(int id, Subscriber value);
     }
 }

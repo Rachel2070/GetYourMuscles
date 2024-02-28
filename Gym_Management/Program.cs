@@ -1,9 +1,11 @@
 
+using Gym_Management.Core;
 using GYM_Management.Core.Models;
 using GYM_Management.Core.ServiceModels;
 using GYM_Management.Data.DataContext;
 using GYM_Management.Data.DataRepository;
 using GYM_Management.Servies.ServiceRpository;
+using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,8 +44,7 @@ builder.Services.AddScoped<IEquipment, EquipmentRepository>();
 builder.Services.AddScoped<IStaff, StaffRepository>();
 builder.Services.AddScoped<ISubscriber, SubscriberRepository>();
 
-
-
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

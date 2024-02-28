@@ -40,13 +40,14 @@ namespace GYM_Management.Servies.ServiceRpository
             return foundpos;
         }
 
-        public void PostStaff(Staff value)
+        public Staff PostStaff(Staff value)
         {
             _staffRepository.DataPostStaff(value);
             IdCount++;
+            return value;
         }
 
-        public void PutStaff(int id, Staff value)
+        public Staff PutStaff(int id, Staff value)
         {
             int index = _staffRepository.GetAllStaff().ToList().FindIndex((Staff s) => s.Worker_Number == id);
             if(index != -1) { 
@@ -62,8 +63,10 @@ namespace GYM_Management.Servies.ServiceRpository
                 foundWorker.Status = value.Status;
                 foundWorker.Position = value.Position;
 
-                _staffRepository.DataPutStaff(index, foundWorker);  
+                _staffRepository.DataPutStaff(index, foundWorker);
+                return foundWorker;
             }
+            return null;
         }
     }
 }

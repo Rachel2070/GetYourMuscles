@@ -11,8 +11,8 @@ namespace GYM_Management.Core.ServiceModels
     {
         public IEnumerable<Equipment> GetEquipment();
         Equipment GetByID(int id);
-        public void PostEquipment(Equipment value);
-        public void PutEquipment(int id, Equipment value);
+        public Equipment PostEquipment(Equipment value);
+        public Equipment PutEquipment(int id, Equipment value);
         public void DeleteEquipment(int id);
 
     }
