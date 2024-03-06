@@ -19,45 +19,28 @@ namespace GYM_Management.Servies.ServiceRpository
         {
             _subscriberRepository = equipmentRepository;
         }
-        public IEnumerable<Subscriber> GetSubscribers()
+        public async Task<IEnumerable<Subscriber>> GetSubscribersAsync()
         {
-            return _subscriberRepository.GetAllSubscribers();
+            return await _subscriberRepository.GetAllSubscribersAsync();
         }
 
-        public Subscriber GetSubscribers(int id)
+        public async Task<Subscriber> GetSubscribersByIdAsync(int id)
         {
-            int index = _subscriberRepository.GetAllSubscribers().ToList().FindIndex(s => s.Subscription_Number == id);
-            if (index == -1)
+            var list = await _subscriberRepository.GetAllSubscribersAsync();
+            Subscriber foundSub = list.First(s => s.StaffId == id);
+            if (foundSub ==null)
                 return null;
-            return _subscriberRepository.GetAllSubscribers().ToList()[index];
+            return foundSub;
         }
 
-        public Subscriber PostSubscriber(Subscriber value)
+        public async Task<Subscriber> PostSubscriberAsync(Subscriber value)
         {
-            _subscriberRepository.DataPostSubscriber(value);
-            IdCount++;
-            return value;
+           return await _subscriberRepository.DataPostSubscriberAsync(value);
         }
 
-        public Subscriber PutSubscriber(int id, Subscriber value)
+        public async Task<Subscriber> PutSubscriberAsync(int id, Subscriber value)
         {
-            int index = _subscriberRepository.GetAllSubscribers().ToList().FindIndex((Subscriber s) => s.Subscription_Number == id);
-            if (index != -1)
-            {
-                Subscriber foundsub = _subscriberRepository.GetAllSubscribers().ToList()[index];
-
-                foundsub.Personal_Id = foundsub.Personal_Id;
-                foundsub.Subscription_Number = foundsub.Subscription_Number;
-                foundsub.Email = value.Email;
-                foundsub.Name = value.Name;
-                foundsub.Status = value.Status;
-                foundsub.Birth_Date = value.Birth_Date;
-                foundsub.End_Subscription_Date = value.End_Subscription_Date;
-                foundsub.Start_Subscription_Date = value.Start_Subscription_Date;
-                _subscriberRepository.DataPutSubscriber(index, value);
-                return foundsub;
-            }
-            return null;
+            return await _subscriberRepository.DataPutSubscriberAsync(id, value);
         }
     }
 }

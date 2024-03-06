@@ -10,37 +10,53 @@ using System.Threading.Tasks;
 
 namespace GYM_Management.Data.DataRepository
 {
-    public class EquipmentRepository: IEquipment
+    public class EquipmentRepository : IEquipment
     {
         private readonly GymData _context;
 
         public EquipmentRepository(GymData equipmentContext)
         {
-            _context = equipmentContext; 
+            _context = equipmentContext;
         }
 
-        public IEnumerable<Equipment> GetAllEquipment()
+        public async Task<IEnumerable<Equipment>> GetAllEquipmentAsync()
         {
-            return _context.GymEquipment.Include(e=>e.Staffs);
+            return await _context.GymEquipment.Include(e => e.Staffs).ToListAsync();
         }
-        public void DataPostEquipment(Equipment value)
+        public async Task<Equipment> DataPostEquipmentAsync(Equipment value)
         {
             _context.GymEquipment.Add(value);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return value;
         }
 
-        public void DataPutEquipment(int index, Equipment value)
+        public async Task<Equipment> DataPutEquipmentAsync(int id, Equipment value)
         {
-            _context.GymEquipment.ToList()[index] = value;
-            _context.SaveChanges();
+            var list = await _context.GymEquipment.ToListAsync();
+            Equipment foundEq = list.First((e) => e.Id == id);
+            if (foundEq != null)
+            {
+                foundEq.Id = foundEq.Id;
+                foundEq.Name = value.Name;
+                foundEq.Category = value.Category;
+                foundEq.Last_Check = value.Last_Check;
+                foundEq.Test_Frequencies = value.Test_Frequencies;
+                foundEq.Expiry_Date = value.Expiry_Date;
+
+                await _context.SaveChangesAsync();
+
+                return foundEq;
+            }
+            return null;
+           
         }
 
-        public void DataDeleteEquipment(int index)
+        public async Task<Equipment> DataDeleteEquipmentAsync(Equipment e)
         {
-            _context.Remove(_context.GymEquipment.ToList()[index]);
-            _context.SaveChanges();
+            var equipment = _context.GymEquipment.First(x => x == e);
+            _context.Remove(equipment);
+            await _context.SaveChangesAsync();
+            return equipment;
         }
-
-
     }
 }

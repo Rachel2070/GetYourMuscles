@@ -9,9 +9,9 @@ namespace GYM_Management.Core.Models
 {
     public interface ISubscriber
     {
-        public IEnumerable<Subscriber> GetAllSubscribers();
-        public void DataPostSubscriber(Subscriber value);
-        public void DataPutSubscriber(int id, Subscriber value);
+        public Task<IEnumerable<Subscriber>> GetAllSubscribersAsync();
+        public Task<Subscriber> DataPostSubscriberAsync(Subscriber value);
+        public Task<Subscriber> DataPutSubscriberAsync(int id, Subscriber value);
 
     }
 }

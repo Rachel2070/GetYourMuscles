@@ -9,9 +9,9 @@ namespace GYM_Management.Core.Models
 {
     public interface IStaff
     {
-        public IEnumerable<Staff> GetAllStaff();
-        public void DataPostStaff(Staff value);
-        public void DataPutStaff(int index, Staff value);
+        public Task<IEnumerable<Staff>> GetAllStaffAsync();
+        public Task<Staff> DataPostStaffAsync(Staff value);
+        public Task<Staff> DataPutStaffAsync(int id, Staff value);
 
     }
 }

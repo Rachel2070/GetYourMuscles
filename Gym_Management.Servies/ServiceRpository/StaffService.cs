@@ -12,61 +12,43 @@ namespace GYM_Management.Servies.ServiceRpository
     public class StaffService: IStaffService
     {
         private readonly IStaff _staffRepository;
-        private static int IdCount = 3;
-
 
         public StaffService(IStaff equipmentRepository)
         {
             _staffRepository = equipmentRepository;
         }
-        public IEnumerable<Staff> GetStaff()
+
+        public Task<IEnumerable<Staff>> GetStaffAsync()
         {
-            return _staffRepository.GetAllStaff();
+            return _staffRepository.GetAllStaffAsync();
         }
 
-        public Staff GetStaffByID(int id)
+        public async Task<Staff> GetStaffByIDAsync(int id)
         {
-            int index = _staffRepository.GetAllStaff().ToList().FindIndex(t => t.Worker_Number == id);
-            if (index == -1)
+            var list =await _staffRepository.GetAllStaffAsync();
+            Staff foundStaff =  list.First(t => t.Worker_Number == id);
+            if (foundStaff ==null)
                 return null;
-            return _staffRepository.GetAllStaff().ToList()[index];
+            return foundStaff;
         }
 
-        public List<Staff> GetStaffByPosition(string position)
+        public async Task<IEnumerable<Staff>> GetStaffByPositionAsync(string position)
         {
-            var foundpos = _staffRepository.GetAllStaff().Where(t => t.Position.ToLower() == position.ToLower()).ToList();
-            if (foundpos == null)
+            var list = await _staffRepository.GetAllStaffAsync();
+            var findPosition = list.Where(t => t.Position.ToLower() == position.ToLower());
+            if (findPosition == null)
                 return null;
-            return foundpos;
+            return findPosition;
         }
 
-        public Staff PostStaff(Staff value)
+        public async Task<Staff> PostStaffAsync(Staff value)
         {
-            _staffRepository.DataPostStaff(value);
-            IdCount++;
-            return value;
+           return  await _staffRepository.DataPostStaffAsync(value);
         }
 
-        public Staff PutStaff(int id, Staff value)
+        public async Task<Staff> PutStaffAsync(int id, Staff value)
         {
-            int index = _staffRepository.GetAllStaff().ToList().FindIndex((Staff s) => s.Worker_Number == id);
-            if(index != -1) { 
-                Staff foundWorker = _staffRepository.GetAllStaff().ToList()[index];
-
-                foundWorker.Personal_Id = foundWorker.Personal_Id;
-                foundWorker.Worker_Number = foundWorker.Worker_Number;
-                foundWorker.Email = value.Email;
-                foundWorker.Name = value.Name;
-                foundWorker.Status = value.Status;
-                foundWorker.Birth_Date = value.Birth_Date;
-                foundWorker.Address = value.Address;
-                foundWorker.Status = value.Status;
-                foundWorker.Position = value.Position;
-
-                _staffRepository.DataPutStaff(index, foundWorker);
-                return foundWorker;
-            }
-            return null;
+            return await _staffRepository.DataPutStaffAsync(id, value);
         }
     }
 }

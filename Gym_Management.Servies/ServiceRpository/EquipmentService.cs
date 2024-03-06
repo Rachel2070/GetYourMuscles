@@ -9,60 +9,46 @@ using System.Threading.Tasks;
 
 namespace GYM_Management.Servies.ServiceRpository
 {
-    public class EquipmentService: IEquipmentService
+    public class EquipmentService : IEquipmentService
     {
         private readonly IEquipment _equipmentRepository;
-        public static int IdCount = 4;
 
 
         public EquipmentService(IEquipment equipmentRepository)
         {
             _equipmentRepository = equipmentRepository;
         }
-        public IEnumerable<Equipment> GetEquipment()
+        public async Task<IEnumerable<Equipment>> GetEquipmentAsync()
         {
-            return _equipmentRepository.GetAllEquipment();
+            return await _equipmentRepository.GetAllEquipmentAsync();
         }
 
-        public Equipment GetByID(int id)
+        public async Task<Equipment> GetByIdAsync(int id)
         {
-            Equipment foundsEq = _equipmentRepository.GetAllEquipment().ToList().Find(s => s.Id == id);
+            var list = await _equipmentRepository.GetAllEquipmentAsync();
+            Equipment foundsEq = list.First(s => s.Id == id);
             if (foundsEq == null)
                 return null;
             return foundsEq;
         }
 
-        public Equipment PostEquipment(Equipment value)
+        public async Task<Equipment> PostEquipmentAsync(Equipment value)
         {
-            _equipmentRepository.DataPostEquipment(value);
-            IdCount++;
-            return value;
+           return await _equipmentRepository.DataPostEquipmentAsync(value);
         }
 
-        public Equipment PutEquipment(int id, Equipment value)
+        public async Task<Equipment> PutEquipmentAsync(int id, Equipment value)
         {
-            int index = _equipmentRepository.GetAllEquipment().ToList().FindIndex((Equipment e) => e.Id == id);
-            if (index != -1) {
-                Equipment foundEq = _equipmentRepository.GetAllEquipment().ToList()[index];
+            return await _equipmentRepository.DataPutEquipmentAsync( id, value);
+        }
 
-                foundEq.Id = foundEq.Id;
-                foundEq.Name = foundEq.Name;
-                foundEq.Category = value.Category;
-                foundEq.Last_Check = value.Last_Check;
-                foundEq.Test_Frequencies = value.Test_Frequencies;
-                foundEq.Expiry_Date = value.Expiry_Date;
-
-                _equipmentRepository.DataPutEquipment(index, foundEq);
-                return foundEq;
-            }
+        public async Task<Equipment> DeleteEquipmentAsync(int id)
+        {
+            var list = await _equipmentRepository.GetAllEquipmentAsync();
+            Equipment foundEq = list.First((Equipment e) => e.Id == id);
+            if (foundEq != null)
+                return await _equipmentRepository.DataDeleteEquipmentAsync(foundEq);
             return null;
-        }
-
-        public void DeleteEquipment(int id)
-        {
-            int index = _equipmentRepository.GetAllEquipment().ToList().FindIndex(e => e.Id == id);
-            if (index != -1)
-                _equipmentRepository.DataDeleteEquipment(index);
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using GYM_Management.Core.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GYM_Managing.Classes
+namespace Gym_Management.Core.PostModel
 {
-    public class Staff
+    public class StaffPostAndPutModel
     {
-        [Key]
-        public int Worker_Number { get; set; }
         public int Personal_Id { get; set; }
         public DateTime Birth_Date { get; set; }
         public string Name { get; set; }
@@ -15,7 +16,6 @@ namespace GYM_Managing.Classes
         public string Status { get; set; }
         public string Address { get; set; }
         public string Position { get; set; }
-        public List<Subscriber> Subscribers { get; set; }
-        public List<Equipment> EquipmentInCategory { get; set; }  
+        public List<int> Equipment;
     }
 }

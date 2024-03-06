@@ -9,10 +9,10 @@ namespace GYM_Management.Core.Models
 {
     public interface IEquipment
     {
-        public IEnumerable<Equipment> GetAllEquipment();
-        public void DataPostEquipment(Equipment value);
-        public void DataPutEquipment(int id, Equipment value);
-        public void DataDeleteEquipment(int id);
+        public Task<IEnumerable<Equipment>> GetAllEquipmentAsync();
+        public Task<Equipment> DataPostEquipmentAsync(Equipment value);
+        public Task<Equipment> DataPutEquipmentAsync(int id, Equipment value);
+        public Task<Equipment> DataDeleteEquipmentAsync(Equipment e);
 
     }
 }

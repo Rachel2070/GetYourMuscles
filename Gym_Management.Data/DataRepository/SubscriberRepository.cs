@@ -19,21 +19,37 @@ namespace GYM_Management.Data.DataRepository
             _context = subscriberContext;   
         }
 
-        public IEnumerable<Subscriber> GetAllSubscribers()
+        public async Task<IEnumerable<Subscriber>> GetAllSubscribersAsync()
         {
-            return _context.GymSubscribers.Include(s=>s.Staff);
+            return await _context.GymSubscribers.Include(s=>s.Staff).ToListAsync();
         }
-        public void DataPostSubscriber(Subscriber value)
+
+        public async Task<Subscriber> DataPostSubscriberAsync(Subscriber value)
         {
             _context.GymSubscribers.Add(value);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return value;   
         }
-        public void DataPutSubscriber(int index, Subscriber value)
+        public async Task<Subscriber> DataPutSubscriberAsync(int id, Subscriber value)
         {
-            _context.GymSubscribers.ToList()[index] = value;
-            _context.SaveChanges();
+            var list = await _context.GymSubscribers.ToListAsync();
+            var foundSub =  list.First((s) => s.Subscription_Number == id);
+            if (foundSub != null)
+            {
+                foundSub.Personal_Id = foundSub.Personal_Id;
+                foundSub.Subscription_Number = foundSub.Subscription_Number;
+                foundSub.Email = value.Email;
+                foundSub.Name = value.Name;
+                foundSub.Status = value.Status;
+                foundSub.Birth_Date = value.Birth_Date;
+                foundSub.End_Subscription_Date = value.End_Subscription_Date;
+                foundSub.Start_Subscription_Date = value.Start_Subscription_Date;
+
+                await _context.SaveChangesAsync();
+                
+                return foundSub;
+            }
+            return null;
         }
-
-
     }
 }

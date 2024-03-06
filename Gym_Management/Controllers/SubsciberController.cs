@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Gym_Management.Core.DTOs;
+using Gym_Management.Core.PostModel;
 using GYM_Management.Core.ServiceModels;
 using GYM_Managing.Classes;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,9 @@ namespace GYM_Managing.Controllers
         }
         // GET: api/<SubsciberControlller>
         [HttpGet]
-        public ActionResult<Subscriber> Get()
+        public async Task<ActionResult<Subscriber>> Get()
         {
-            var list = _subscriberService.GetSubscribers();
+            var list = await _subscriberService.GetSubscribersAsync();
             var newList = _mapper.Map<IEnumerable<SubscriberDto>>(list);    
             return Ok(newList);
 ;
@@ -32,26 +33,28 @@ namespace GYM_Managing.Controllers
 
         // GET api/<SubsciberControlller>/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var sub = _subscriberService.GetSubscribers(id);
+            var sub = await _subscriberService.GetSubscribersByIdAsync(id);
             var newSub = _mapper.Map<SubscriberDto>(sub);
             return Ok(newSub);
         }
 
         // POST api/<SubsciberControlller>
         [HttpPost]
-        public ActionResult Post([FromBody] Subscriber value)
+        public async Task<ActionResult> Post([FromBody] SubsciberPostAndPutModel value)
         {
-            var newSub = _subscriberService.PostSubscriber(value);
+            var SubToPost = new Subscriber { Birth_Date=value.Birth_Date, Email=value.Email, Name=value.Name, Personal_Id=value.Personal_Id, Phone=value.Phone, StaffId=value.StaffId };
+            var newSub = await _subscriberService.PostSubscriberAsync(SubToPost);
             return Ok(newSub);
         }
 
         // PUT api/<SubsciberControlller>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Subscriber value)
+        public async Task<ActionResult> Put(int id, [FromBody] SubsciberPostAndPutModel value)
         {
-           var update = _subscriberService.PutSubscriber(id, value);
+            var SubToUpdate = new Subscriber { Birth_Date = value.Birth_Date, Email = value.Email, Name = value.Name, Personal_Id = value.Personal_Id, Phone = value.Phone, StaffId = value.StaffId };
+            var update = await _subscriberService.PutSubscriberAsync(id, SubToUpdate);
             return Ok(update);  
         }
     }

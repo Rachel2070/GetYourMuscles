@@ -9,10 +9,10 @@ namespace GYM_Management.Core.ServiceModels
 {
     public interface IStaffService
     {
-        public IEnumerable<Staff> GetStaff();
-        public Staff GetStaffByID(int id);
-        public List<Staff> GetStaffByPosition(string position);
-        public Staff PostStaff(Staff value);
-        public Staff PutStaff(int id, Staff value);
+        public Task<IEnumerable<Staff>> GetStaffAsync();
+        public Task<Staff> GetStaffByIDAsync(int id);
+        public Task<IEnumerable<Staff>> GetStaffByPositionAsync(string position);
+        public Task<Staff> PostStaffAsync(Staff value);
+        public Task<Staff> PutStaffAsync(int id, Staff value);
     }
 }

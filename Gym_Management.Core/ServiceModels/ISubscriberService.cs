@@ -9,9 +9,9 @@ namespace GYM_Management.Core.ServiceModels
 {
     public interface ISubscriberService
     {
-        public IEnumerable<Subscriber> GetSubscribers();
-        public Subscriber GetSubscribers(int id);
-        public Subscriber PostSubscriber(Subscriber value);
-        public Subscriber PutSubscriber(int id, Subscriber value);
+        public Task<IEnumerable<Subscriber>> GetSubscribersAsync();
+        public Task<Subscriber> GetSubscribersByIdAsync(int id);
+        public Task<Subscriber> PostSubscriberAsync(Subscriber value);
+        public Task<Subscriber> PutSubscriberAsync(int id, Subscriber value);
     }
 }

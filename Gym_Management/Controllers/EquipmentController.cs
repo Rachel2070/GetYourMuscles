@@ -2,6 +2,7 @@
 ///using GYM_Managing.Datas;
 using AutoMapper;
 using Gym_Management.Core.DTOs;
+using Gym_Management.Core.PostModel;
 using GYM_Management.Core.ServiceModels;
 using GYM_Managing.Classes;
 using Microsoft.AspNetCore.Mvc;
@@ -22,46 +23,48 @@ namespace GYM_Managing.Controllers
             _equipmentService = context;
             _mapper = mapper;   
         }
-        //public static int IdCount = 4;
+
         // GET: api/<EquipmentController>
         [HttpGet]
-        public ActionResult<Equipment> Get()
+        public async Task<ActionResult<Equipment>> Get()
         {
-            var list = _equipmentService.GetEquipment();
+            var list = await _equipmentService.GetEquipmentAsync();
             var newList = _mapper.Map<IEnumerable<EquipmentDto>>(list); 
             return Ok(newList);
         }
 
         // GET api/<EquipmentController>/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var eq = _equipmentService.GetByID(id);
+            var eq = await _equipmentService.GetByIdAsync(id);
             var newEq = _mapper.Map<EquipmentDto>(eq);
             return Ok(newEq);
         }
 
         // POST api/<EquipmentController>
         [HttpPost]
-        public ActionResult Post([FromBody] Equipment value)
+        public async Task<ActionResult> Post([FromBody] EquipmentPostAndPutModel value)
         {
-            var newEq = _equipmentService.PostEquipment(value);
+            var eqToPost = new Equipment { Name = value.Name, Category = value.Category, Expiry_Date = value.Expiry_Date, Last_Check = value.Last_Check, Test_Frequencies = value.Test_Frequencies};
+            var newEq =await _equipmentService.PostEquipmentAsync(eqToPost);
             return Ok(newEq);
         }
 
         // PUT api/<EquipmentController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Equipment value)
+        public async Task<ActionResult> Put(int id, [FromBody] EquipmentPostAndPutModel value)
         {
-            var updated = _equipmentService.PutEquipment(id, value);
+            var eqToPut = new Equipment { Name = value.Name, Category = value.Category, Expiry_Date = value.Expiry_Date, Last_Check = value.Last_Check, Test_Frequencies = value.Test_Frequencies };
+            var updated = await _equipmentService.PutEquipmentAsync(id, eqToPut);
             return Ok(updated);
         }
 
         // DELETE api/<EquipmentController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<Equipment> Delete(int id)
         { 
-            _equipmentService.DeleteEquipment(id);
+          return await _equipmentService.DeleteEquipmentAsync(id);
         }
     }
 }

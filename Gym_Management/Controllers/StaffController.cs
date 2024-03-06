@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Gym_Management.Core.PostModel;
 using Gym_Management.Core.TDOs;
 using GYM_Management.Core.ServiceModels;
 using GYM_Managing.Classes;
@@ -24,43 +25,48 @@ namespace Gym.Controllers
 
         // GET: api/<StaffController>
         [HttpGet]
-        public ActionResult<Staff> Get()
+        public async Task<ActionResult<Staff>> Get()
         {
-            var list =  _StaffService.GetStaff();
+            var list = await _StaffService.GetStaffAsync();
             var newList = _mapper.Map<IEnumerable<StaffDto>>(list);
             return Ok(newList);
         }
 
         // GET api/<StaffController>/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var staff = _StaffService.GetStaffByID(id);
+            var staff = await _StaffService.GetStaffByIDAsync(id);
             var newStaff = _mapper.Map<StaffDto>(staff);
             return Ok(newStaff);
         }
 
         // GET api/<StaffController>/5
         [HttpGet("Position/{position}")]
-        public ActionResult<Staff> Get(string position)
+        public async Task<ActionResult<Staff>> Get(string position)
         {
-            var List =  _StaffService.GetStaffByPosition(position);
+            var List = await _StaffService.GetStaffByPositionAsync(position);
             var newList = _mapper.Map<IEnumerable<StaffDto>>(List);
             return Ok(newList);
         }
 
         // POST api/<StaffController>
         [HttpPost]
-        public void Post([FromBody] Staff value)
+        public async Task<ActionResult> Post([FromBody] StaffPostAndPutModel value)
         {
-             _StaffService.PostStaff(value);
+            var workerToPost = new Staff { Personal_Id = value.Personal_Id, Address = value.Address, Birth_Date = value.Birth_Date, Email = value.Email, Name = value.Name, Phone = value.Phone, Position = value.Position, Status = value.Status };
+            var newWorker = await _StaffService.PostStaffAsync(workerToPost);
+            return Ok(newWorker);
         }
 
         // PUT api/<StaffController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Staff value)
+        public async Task<ActionResult> Put(int id, [FromBody] StaffPostAndPutModel value)
         {
-            _StaffService.PutStaff(id, value);   
+            var workerToUpdate = new Staff { Personal_Id = value.Personal_Id, Address = value.Address, Birth_Date = value.Birth_Date, Email = value.Email, Name = value.Name, Phone = value.Phone, Position = value.Position, Status = value.Status };
+            var updated = await _StaffService.PutStaffAsync(id, workerToUpdate);
+            var shorted = _mapper.Map<StaffDto>(updated);
+            return Ok(shorted);
         }
     }
 }

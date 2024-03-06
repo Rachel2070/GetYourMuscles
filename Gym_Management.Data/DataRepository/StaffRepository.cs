@@ -19,22 +19,38 @@ namespace GYM_Management.Data.DataRepository
             _context = staffContext; 
         }
 
-        public IEnumerable<Staff> GetAllStaff()
+        public async Task<IEnumerable<Staff>> GetAllStaffAsync()
         {
-            return _context.GymStaff.Include(s=>s.Subscribers).Include(e=>e.EquipmentInCategory);
+            return await _context.GymStaff.Include(s=>s.Subscribers).Include(e=>e.EquipmentInCategory).ToArrayAsync();
         }
 
-        public void DataPostStaff(Staff value)
+        public async Task<Staff> DataPostStaffAsync(Staff value)
         {
             _context.GymStaff.Add(value);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
+            return value;
         }
-        public void DataPutStaff(int index, Staff value)
+        public async Task<Staff> DataPutStaffAsync(int id, Staff value)
         {
-            _context.GymStaff.ToList()[index] = value;
-            _context.SaveChanges();
-        }
+            var list = await _context.GymStaff.ToListAsync();
+             Staff foundStaff = list.Find(( s) => s.Worker_Number == id);
+            if (foundStaff != null)
+            {
+                foundStaff.Personal_Id = foundStaff.Personal_Id;
+                foundStaff.Worker_Number = foundStaff.Worker_Number;
+                foundStaff.Email = value.Email;
+                foundStaff.Name = value.Name;
+                foundStaff.Status = value.Status;
+                foundStaff.Birth_Date = value.Birth_Date;
+                foundStaff.Address = value.Address;
+                foundStaff.Status = value.Status;
+                foundStaff.Position = value.Position;
 
+                await _context.SaveChangesAsync();  
+               return foundStaff;   
+            }
+            return null;
+        }
 
     }
 }

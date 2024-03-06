@@ -9,11 +9,11 @@ namespace GYM_Management.Core.ServiceModels
 {
     public interface IEquipmentService
     {
-        public IEnumerable<Equipment> GetEquipment();
-        Equipment GetByID(int id);
-        public Equipment PostEquipment(Equipment value);
-        public Equipment PutEquipment(int id, Equipment value);
-        public void DeleteEquipment(int id);
+        public Task<IEnumerable<Equipment>> GetEquipmentAsync();
+        public Task<Equipment> GetByIdAsync(int id);
+        public Task<Equipment> PostEquipmentAsync(Equipment value);
+        public Task<Equipment> PutEquipmentAsync(int id, Equipment value);
+        public Task<Equipment> DeleteEquipmentAsync(int id);
 
     }
 }
