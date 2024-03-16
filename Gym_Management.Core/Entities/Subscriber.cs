@@ -9,12 +9,18 @@ namespace GYM_Managing.Classes
         public int Personal_Id { get; set; }
         public DateTime Birth_Date { get; set; }
         public string Name { get; set; }
-        public string Status { get; set; }
+        public string ? Status { get; set; }
         public int Phone { get; set; }
         public string Email { get; set; }
-        public DateTime Start_Subscription_Date { get; set; }
-        public DateTime End_Subscription_Date { get; set; }
+        public DateTime ? Start_Subscription_Date { get; set; }
+        public DateTime ? End_Subscription_Date { get; set; }
         public int StaffId { get; set; }
         public Staff Staff { get; set; }
+        //public Subscriber()
+        //{
+        //    Status = "sighned";
+        //    Start_Subscription_Date = new DateTime();
+        //    End_Subscription_Date = new DateTime();
+        //}
     }
 }

@@ -1,5 +1,6 @@
 
 using Gym_Management.Core;
+using Gym_Management.Middlewares;
 using GYM_Management.Core.Models;
 using GYM_Management.Core.ServiceModels;
 using GYM_Management.Data.DataContext;
@@ -60,6 +61,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors(policy);
+
+app.UseMiddleware<ShabbatMiddleware>();
 
 app.MapControllers();
 
