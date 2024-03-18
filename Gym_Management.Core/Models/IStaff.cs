@@ -11,6 +11,7 @@ namespace GYM_Management.Core.Models
     {
         public Task<IEnumerable<Staff>> GetAllStaffAsync();
         public Task<Staff> DataPostStaffAsync(Staff value);
+        public Task<Staff> DataPostEquiepmentToStaffAsync(int staffId, int eqId);
         public Task<Staff> DataPutStaffAsync(int id, Staff value);
 
     }

@@ -59,6 +59,14 @@ namespace Gym.Controllers
             return Ok(newWorker);
         }
 
+        // POST api/<StaffController>
+        [HttpPost("Equipment")]
+        public async Task<ActionResult> PostEquipment(int staffId, int eqId)
+        {
+            var staff = await _StaffService.PostEquiepmentToStaffAsync(staffId, eqId);  
+            return Ok(staff);
+        }
+
         // PUT api/<StaffController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] StaffPostAndPutModel value)

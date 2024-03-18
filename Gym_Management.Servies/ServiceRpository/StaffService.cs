@@ -46,6 +46,11 @@ namespace GYM_Management.Servies.ServiceRpository
            return  await _staffRepository.DataPostStaffAsync(value);
         }
 
+        public async Task<Staff> PostEquiepmentToStaffAsync(int staffId, int eqId)
+        {
+            return await _staffRepository.DataPostEquiepmentToStaffAsync(staffId, eqId);
+        }
+
         public async Task<Staff> PutStaffAsync(int id, Staff value)
         {
             return await _staffRepository.DataPutStaffAsync(id, value);

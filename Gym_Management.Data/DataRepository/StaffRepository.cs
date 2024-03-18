@@ -30,6 +30,36 @@ namespace GYM_Management.Data.DataRepository
            await _context.SaveChangesAsync();
             return value;
         }
+
+        public async Task<Staff> DataPostEquiepmentToStaffAsync(int staffId, int eqId)
+        {
+            // Find the staff member by ID
+            Staff postToStaff = await _context.GymStaff
+            .Include(s => s.EquipmentInCategory) // Include equipmentInCategory navigation property
+              .FirstOrDefaultAsync(s => s.Worker_Number == staffId);
+
+            // Find the equipment by ID
+            Equipment equipmentToStaff = await _context.GymEquipment.FirstOrDefaultAsync(e => e.Id == eqId);
+
+            // Ensure the staff member and equipment exist
+            if (postToStaff != null && equipmentToStaff != null)
+            {
+                // Initialize the equipmentInCategory collection if it's null
+                if (postToStaff.EquipmentInCategory == null)
+                {
+                    postToStaff.EquipmentInCategory = new List<Equipment>();
+                }
+
+                // Always add the equipment to the end of the list
+                postToStaff.EquipmentInCategory.Add(equipmentToStaff);
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+            }
+
+            return postToStaff;
+        }
+
         public async Task<Staff> DataPutStaffAsync(int id, Staff value)
         {
             var list = await _context.GymStaff.ToListAsync();

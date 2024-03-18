@@ -13,6 +13,7 @@ namespace GYM_Management.Core.ServiceModels
         public Task<Staff> GetStaffByIDAsync(int id);
         public Task<IEnumerable<Staff>> GetStaffByPositionAsync(string position);
         public Task<Staff> PostStaffAsync(Staff value);
+        public Task<Staff> PostEquiepmentToStaffAsync(int staffId, int eqId);
         public Task<Staff> PutStaffAsync(int id, Staff value);
     }
 }
